@@ -60,6 +60,25 @@ input:focus {
   outline: none;
   border-color: var(--secondary);
 }
+.admin-box {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-box input {
+  width: 60%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  text-align: center;
+}
+
+.admin-box input:focus {
+  outline: none;
+  border-color: #c62828;
+}
 
 .actions {
   display: flex;
