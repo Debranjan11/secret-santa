@@ -35,11 +35,18 @@ async function generate() {
     });
   });
 
-  const res = await fetch("/generate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ participants })
-  });
+const adminKey = prompt("Enter Admin Key");
+
+const res = await fetch("/generate", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    participants: participants,
+    admin_key: adminKey
+  })
+});
 
   const data = await res.json();
   alert(data.message || data.error);

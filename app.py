@@ -12,6 +12,10 @@ def home():
 
 @app.route("/generate", methods=["POST"])
 def generate():
+    admin_key = request.json.get("admin_key")
+    if admin_key != os.getenv("ADMIN_KEY"):
+        return jsonify({"error": "Unauthorized"}), 403
+    
     participants = request.json.get("participants")
 
     if not participants or len(participants) < 2:
