@@ -5,26 +5,40 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
-    <h1>🎄 Secret Santa Generator</h1>
+<div class="container">
+  <h1>🎄 Secret Santa Generator</h1>
 
-    <div class="subtitle">
-      Securely assign gift partners and notify by email 🎁
-    </div>
-
-    <div id="list"></div>
-
-    <div class="actions">
-      <button class="add-btn" onclick="add()">➕ Add Person</button>
-      <button class="generate-btn" onclick="generate()">🎁 Generate</button>
-    </div>
-
-    <div class="footer">
-      Admin-protected • Emails sent privately 🔒
-    </div>
+  <div class="subtitle">
+    Securely assign gift partners and notify by email 🎁
   </div>
 
+  <!-- 🔔 INLINE MESSAGE AREA (REQUIRED) -->
+  <div id="message" class="message hidden"></div>
+
+  <div id="list"></div>
+
+  <!-- 🔐 ADMIN INPUT -->
+  <div id="admin-box" class="admin-box hidden">
+    <input type="password" id="admin-key" placeholder="Admin key" />
+  </div>
+
+  <div class="actions">
+    <button class="add-btn" onclick="add()">➕ Add Person</button>
+    <button class="generate-btn" onclick="generate()">🎁 Generate</button>
+  </div>
+
+  <div class="footer">
+    Admin-protected • Emails sent privately 🔒
+  </div>
+</div>
+
 <script>
+function showMessage(text, type) {
+  const msg = document.getElementById("message");
+  msg.innerText = text;
+  msg.className = `message ${type}`;
+}
+
 function add() {
   const div = document.createElement("div");
   div.className = "participant";
@@ -36,8 +50,22 @@ function add() {
 }
 
 async function generate() {
-  const adminKey = prompt("Enter Admin Key");
-  if (!adminKey) return;
+  const adminBox = document.getElementById("admin-box");
+  const adminInput = document.getElementById("admin-key");
+
+  // First click → show admin input
+  if (adminBox.classList.contains("hidden")) {
+    adminBox.classList.remove("hidden");
+    adminInput.focus();
+    showMessage("Enter admin key to generate assignments.", "error");
+    return;
+  }
+
+  const adminKey = adminInput.value.trim();
+  if (!adminKey) {
+    showMessage("Admin key is required.", "error");
+    return;
+  }
 
   const rows = document.querySelectorAll(".participant");
   const participants = [];
@@ -50,6 +78,11 @@ async function generate() {
     });
   });
 
+  if (participants.length < 2) {
+    showMessage("Please add at least 2 participants.", "error");
+    return;
+  }
+
   const res = await fetch("/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -60,7 +93,14 @@ async function generate() {
   });
 
   const data = await res.json();
-  alert(data.message || data.error);
+
+  if (res.ok) {
+    showMessage(data.message, "success");
+    adminInput.value = "";
+    adminBox.classList.add("hidden");
+  } else {
+    showMessage(data.error || "Unauthorized", "error");
+  }
 }
 </script>
 
