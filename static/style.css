@@ -21,7 +21,7 @@ body {
 }
 
 .container {
-  background: var(--card-bg);
+  background: white;
   width: 100%;
   max-width: 520px;
   padding: 30px;
