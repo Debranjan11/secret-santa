@@ -19,6 +19,60 @@ body {
   align-items: center;
   justify-content: center;
 }
+/* 🎄 HERO SECTION */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ),
+    url("/static/images/hero-christmas.png");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #ffffff;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  opacity: 0.95;
+}
+
+.scroll-hint {
+  margin-top: 40px;
+  font-size: 14px;
+  opacity: 0.8;
+  animation: bounce 2s infinite;
+}
+
+/* subtle motion */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.tool {
+  padding: 100px 20px;
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+}
 
 .container {
   background: white;
