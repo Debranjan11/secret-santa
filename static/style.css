@@ -30,6 +30,7 @@ section {
 
 /* 🎄 HERO SECTION */
 .hero {
+  position: relative;
   width: 100%;
   min-height: 100vh;
 
@@ -54,6 +55,7 @@ section {
 
 
 .hero h1 {
+    color: #e53935;
   font-size: 3rem;
   margin-bottom: 12px;
   text-shadow: 0 4px 20px rgba(0,0,0,0.4);
@@ -63,6 +65,7 @@ section {
   font-size: 1.2rem;
   max-width: 600px;
   opacity: 0.95;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
 }
 /* Smooth transition from hero */
 .hero::after {
@@ -77,7 +80,7 @@ section {
 
 .tool {
   width: 100%;
-  padding: 120px 20px;
+  padding: 140px 20px 120px;
 
   display: flex;
   justify-content: center;
@@ -193,6 +196,20 @@ button:hover {
   font-size: 12px;
   color: #777;
 }
+
+.how-it-works {
+  width: 100%;
+  padding: 100px 20px;
+  background: #fafafa;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  color: #c62828;
+  margin-bottom: 20px;
+}
+
 
 .steps {
   max-width: 1000px;
