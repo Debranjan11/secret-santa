@@ -5,32 +5,64 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
-  <h1>🎄 Secret Santa Generator</h1>
+  <!-- 🎄 STAGE 1: HERO / MOOD -->
+  <section class="hero">
+    <h1>🎄 Spread the Joy of Giving</h1>
+    <p>Create magical Secret Santa moments for friends, family, and teams.</p>
+    <span class="scroll-hint">↓ Scroll to begin ↓</span>
+  </section>
+  
+  <!-- 🎁 STAGE 2: SECRET SANTA TOOL -->
+  <section class="tool">
+    <div class="container">
+      <h1>🎄 Secret Santa Generator</h1>
 
-  <div class="subtitle">
-    Securely assign gift partners and notify by email 🎁
-  </div>
+      <div class="subtitle">
+        Securely assign gift partners and notify by email 🎁
+      </div>
 
-  <!-- 🔔 INLINE MESSAGE AREA (REQUIRED) -->
-  <div id="message" class="message hidden"></div>
+      <!-- INLINE MESSAGE -->
+      <div id="message" class="message hidden"></div>
 
-  <div id="list"></div>
+      <!-- PARTICIPANTS -->
+      <div id="list"></div>
 
-  <!-- 🔐 ADMIN INPUT -->
-  <div id="admin-box" class="admin-box hidden">
-    <input type="password" id="admin-key" placeholder="Admin key" />
-  </div>
+      <!-- ADMIN KEY -->
+      <div id="admin-box" class="admin-box hidden">
+        <input type="password" id="admin-key" placeholder="Admin key" />
+      </div>
 
-  <div class="actions">
-    <button class="add-btn" onclick="add()">➕ Add Person</button>
-    <button class="generate-btn" onclick="generate()">🎁 Generate</button>
-  </div>
+      <!-- ACTION BUTTONS -->
+      <div class="actions">
+        <button class="add-btn" onclick="add()">➕ Add Person</button>
+        <button class="generate-btn" onclick="generate()">🎁 Generate</button>
+      </div>
 
-  <div class="footer">
-    Admin-protected • Emails sent privately 🔒
-  </div>
-</div>
+      <div class="footer">
+        Admin-protected • Emails sent privately 🔒
+      </div>
+    </div>
+  </section>
+
+  <!-- 🧠 STAGE 3: HOW IT WORKS -->
+  <section class="how-it-works">
+    <h2>✨ How It Works</h2>
+    <div class="steps">
+      <div>🎅 Add participants</div>
+      <div>🔒 Generate securely</div>
+      <div>📧 Everyone gets a private email</div>
+    </div>
+  </section>
+
+  <!-- ❄️ STAGE 4: CHRISTMAS VIBE -->
+  <section class="vibe">
+    <p>🎄 Made for cozy December moments.</p>
+  </section>
+
+  <!-- 🧾 FOOTER -->
+  <footer class="site-footer">
+    <p>Made with ❤️ for the holidays</p>
+  </footer>
 
 <script>
 function showMessage(text, type) {
