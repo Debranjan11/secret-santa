@@ -273,14 +273,15 @@ button:active {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  z-index: 1;
+  z-index: 9999;
 }
 
 .snow {
+  color: #e3f2fd;
   position: absolute;
   top: -10%;
-  font-size: 18px;
-  opacity: 0.6;
+  font-size: 22px;
+  opacity: 0.75;
   animation: snow-fall linear infinite;
 }
 
