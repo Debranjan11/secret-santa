@@ -15,9 +15,7 @@ body {
   min-height: 100vh;
   font-family: "Segoe UI", system-ui, sans-serif;
   background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
 }
 /* 🎄 HERO SECTION */
 .hero {
@@ -46,6 +44,7 @@ body {
 .hero h1 {
   font-size: 3rem;
   margin-bottom: 12px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .hero p {
