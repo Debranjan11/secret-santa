@@ -8,6 +8,7 @@ from collections import defaultdict
 from flask import request
 import hmac
 import os
+import random
 
 RATE_LIMIT = 5           # max requests
 RATE_WINDOW = 60         # per 60 seconds
@@ -26,8 +27,12 @@ def secure_compare(a, b):
 
 @app.route("/generate", methods=["POST"])
 def generate():
-    data = request.get_json()  
-    
+    #parse request
+    data = request.get_json() 
+    if not data:
+        return {"error": "Invalid request."}, 400 
+
+    #rate limiting
     ip = request.remote_addr or "unknown"
 
     if is_rate_limited(ip):
@@ -35,6 +40,7 @@ def generate():
         "error": "Too many requests. Please wait a minute and try again."
     }, 429
     
+    #admin Key check
     admin_key = data.get("admin_key", "")
     real_key = os.environ.get("ADMIN_KEY", "")
 
@@ -43,24 +49,48 @@ def generate():
         "error": "Unauthorized request."
     }, 403
 
+    #extract participants
+    participants = data.get("participants", [])
+    if len(participants) < 2:
+        return {"error": "At least two participants are required."}, 400
+
+    #main logic
+    try:
+        assignments = generate_assignments(participants)
+
+        for giver, receiver in assignments:
+            send_email(
+                giver["email"],
+                giver["name"],
+                receiver["name"]
+            )
+
+    except Exception:
+        # Do NOT expose internal errors
+        return {
+            "error": "Something went wrong while sending emails. Please try again."
+        }, 500
+
+    #clear sensitive data
+    participants.clear()
     
-    participants = request.json.get("participants")
-
-    if not participants or len(participants) < 2:
-        return jsonify({"error": "At least 2 participants required"}), 400
-
-    names = [p["name"] for p in participants]
-    shuffled = names[:]
-
-    while True:
-        random.shuffle(shuffled)
-        if all(names[i] != shuffled[i] for i in range(len(names))):
-            break
-
-    for i, p in enumerate(participants):
-        send_email(p["email"], p["name"], shuffled[i])
-
+    #success message
     return jsonify({"message": "🎁 Secret Santa emails sent!"})
+
+def generate_assignments(participants):
+    if len(participants) < 2:
+        raise ValueError("Not enough participants")
+
+    givers = participants[:]
+    receivers = participants[:]
+
+    for _ in range(10):  # limited attempts to avoid infinite loop
+        random.shuffle(receivers)
+        if all(g["email"] != r["email"] for g, r in zip(givers, receivers)):
+            return list(zip(givers, receivers))
+
+    raise RuntimeError("Failed to generate valid Secret Santa assignments")
+
 
 def send_email(to_email, name, assigned):
     message = Mail(

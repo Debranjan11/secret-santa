@@ -295,3 +295,10 @@ button:active {
   from { transform: translateY(0); }
   to { transform: translateY(110vh); }
 }
+
+.privacy-note {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+}
