@@ -129,6 +129,9 @@ async function generate() {
     showMessage("Admin key is required.", "error");
     return;
   }
+  const generateBtn = document.querySelector(".generate-btn");
+  generateBtn.disabled = true;
+  generateBtn.innerText = "Sending…";
 
   const rows = document.querySelectorAll(".participant");
   const participants = [];
@@ -164,6 +167,9 @@ async function generate() {
   } else {
     showMessage(data.error || "Unauthorized", "error");
   }
+  generateBtn.disabled = false;
+  generateBtn.innerText = "🎁 Generate";
+
 }
 </script>
 
