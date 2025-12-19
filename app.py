@@ -9,6 +9,8 @@ from flask import request
 import hmac
 import os
 import random
+import re
+
 
 RATE_LIMIT = 5           # max requests
 RATE_WINDOW = 60         # per 60 seconds
@@ -51,6 +53,10 @@ def generate():
 
     #extract participants
     participants = data.get("participants", [])
+    error = validate_participants(participants)
+    if error:
+        return {"error": error}, 400
+    
     if len(participants) < 2:
         return {"error": "At least two participants are required."}, 400
 
@@ -73,7 +79,7 @@ def generate():
 
     #clear sensitive data
     participants.clear()
-    
+
     #success message
     return jsonify({"message": "🎁 Secret Santa emails sent!"})
 
@@ -123,6 +129,36 @@ def is_rate_limited(ip):
     request_log[ip].append(now)
     return False
 
+EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+def validate_participants(participants):
+    if not isinstance(participants, list):
+        return "Participants must be a list."
+
+    if len(participants) < 2:
+        return "At least two participants are required."
+
+    seen_emails = set()
+
+    for i, p in enumerate(participants):
+        if not isinstance(p, dict):
+            return f"Participant #{i+1} is invalid."
+
+        name = p.get("name", "").strip()
+        email = p.get("email", "").strip().lower()
+
+        if not name:
+            return f"Participant #{i+1} name is required."
+
+        if not email or not EMAIL_REGEX.match(email):
+            return f"Participant #{i+1} has an invalid email."
+
+        if email in seen_emails:
+            return "Duplicate emails are not allowed."
+
+        seen_emails.add(email)
+
+    return None  # valid
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
